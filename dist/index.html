@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b1020" />
+    <title>Luna Litho Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/assets/index-CjSd4b-W.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#"><span class="brand-mark">◒</span><span>LUNA <em>LITHO</em></span></a>
+        <nav><a href="#studio">Studio</a><a href="#guide">Print guide</a></nav>
+        <span class="local-badge"><i></i> Local processing</span>
+      </header>
+
+      <main id="studio">
+        <section class="hero">
+          <div><p class="eyebrow">PHOTO → LIGHT → OBJECT</p><h1>Make light<br><i>visible.</i></h1><p class="hero-copy">Transform a favorite photo into a dimensional, backlit object. Built for beautifully printable crescent lithophanes.</p></div>
+          <div class="hero-orbit"><div class="orbit-line"></div><div class="moon-disc"><span></span></div><p>DESIGN LOCALLY<br>PRINT ANYWHERE</p></div>
+        </section>
+
+        <section class="studio-grid">
+          <aside class="controls" aria-label="Lithophane settings">
+            <div class="panel-title"><span>01</span><h2>Source image</h2></div>
+            <input id="fileInput" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+            <button class="dropzone" id="dropzone" type="button"><span class="upload-icon">↑</span><strong>Drop a photograph</strong><small>or browse files · JPG, PNG, WebP</small></button>
+            <div class="image-actions hidden" id="imageActions"><button id="replaceBtn" class="text-button">Replace</button><button id="removeBtn" class="text-button danger">Remove</button></div>
+
+            <details open><summary><span>IMAGE &amp; CROP</span><b>+</b></summary><div class="control-stack">
+              <label>Crop ratio <select id="cropRatio"><option value="original">Original aspect ratio</option><option value="free">Free crop</option><option value="1">1 : 1</option><option value="1.333333">4 : 3</option><option value="1.777778">16 : 9</option></select></label>
+              <label>Crop scale <output id="cropScaleOut">100%</output><input id="cropScale" type="range" min="0.5" max="1" step="0.01" value="1"></label>
+              <label>Crop X <output id="cropXOut">0</output><input id="cropX" type="range" min="-1" max="1" step="0.01" value="0"></label>
+              <label>Crop Y <output id="cropYOut">0</output><input id="cropY" type="range" min="-1" max="1" step="0.01" value="0"></label>
+            </div></details>
+
+            <details open><summary><span>IMAGE TONE</span><b>+</b></summary><div class="control-stack">
+              <label>Brightness <output id="brightnessOut">0</output><input id="brightness" type="range" min="-100" max="100" value="0"></label>
+              <label>Contrast <output id="contrastOut">1.0</output><input id="contrast" type="range" min="0" max="3" step="0.1" value="1"></label>
+              <label>Image gamma <output id="gammaOut">1.0</output><input id="gamma" type="range" min="0.1" max="3" step="0.1" value="1"></label>
+              <label>Blur <output id="blurOut">0 px</output><input id="blur" type="range" min="0" max="5" step="1" value="0"></label>
+              <label>Sharpen <output id="sharpenOut">0%</output><input id="sharpen" type="range" min="0" max="1" step="0.1" value="0"></label>
+              <label class="switch-line">Auto-level luminance <input id="autoLevels" type="checkbox"><span class="switch"></span></label>
+              <label class="switch-line">Invert luminance <input id="invert" type="checkbox"><span class="switch"></span></label>
+              <label>Rotation <output id="rotationOut">0°</output><input id="rotation" type="range" min="0" max="360" step="1" value="0"></label>
+            </div></details>
+
+            <details open><summary><span>PHYSICAL SIZE</span><b>+</b></summary><div class="size-grid">
+              <label>Width <span class="number-field"><input id="width" type="number" min="20" max="300" value="100"><small>mm</small></span></label>
+              <label>Height <span class="number-field"><input id="height" type="number" min="20" max="300" value="100"><small>mm</small></span></label>
+              <label class="switch-line full">Lock aspect ratio <input id="lockRatio" type="checkbox" checked><span class="switch"></span></label>
+            </div></details>
+
+            <details open><summary><span>LITHOPHANE</span><b>+</b></summary><div class="control-stack">
+              <label>Minimum thickness <output id="minThicknessOut">0.8 mm</output><input id="minThickness" type="range" min="0.4" max="2" step="0.1" value="0.8"></label>
+              <label>Maximum thickness <output id="maxThicknessOut">3.0 mm</output><input id="maxThickness" type="range" min="1.5" max="5" step="0.1" value="3"></label>
+              <label>Thickness gamma <output id="thicknessGammaOut">1.0</output><input id="thicknessGamma" type="range" min="0.1" max="3" step="0.1" value="1"></label>
+              <label>Resolution <output id="resolutionOut">0.15 mm/px</output><input id="resolution" type="range" min="0.1" max="0.3" step="0.01" value="0.15"></label>
+            </div></details>
+
+            <details open><summary><span>MODEL FORM</span><b>+</b></summary><div class="control-stack">
+              <label>Shape <select id="shape"><option value="sphere" selected>Spherical globe</option><option value="crescent">Crescent moon</option><option value="circle">Circle</option><option value="heart">Heart</option><option value="rounded">Rounded rectangle</option><option value="rectangle">Rectangle</option><option value="square">Square</option><option value="custom">Custom SVG / PNG mask</option></select></label>
+              <div id="sphereControls">
+                <label>Globe diameter <output id="sphereDiameterOut">120 mm</output><input id="sphereDiameter" type="range" min="60" max="220" step="1" value="120"></label>
+                <label>Bottom opening <output id="sphereOpeningOut">22°</output><input id="sphereOpening" type="range" min="8" max="42" step="1" value="22"></label>
+                <p class="model-help">A hollow, light-ready shell with a bottom opening for an LED base.</p>
+              </div>
+              <div id="flatControls">
+              <input id="maskInput" type="file" accept="image/svg+xml,image/png" hidden>
+              <button id="maskBtn" class="mask-button hidden" type="button">Upload SVG or PNG mask</button>
+              <label>Crescent depth <output id="crescentOut">0.40</output><input id="crescent" type="range" min="0.15" max="0.72" step="0.01" value="0.4"></label>
+              <label>Outer radius <output id="outerRadiusOut">0.90</output><input id="outerRadius" type="range" min="0.55" max="1.15" step="0.01" value="0.9"></label>
+              <label>Inner radius <output id="innerRadiusOut">0.82</output><input id="innerRadius" type="range" min="0.4" max="1.15" step="0.01" value="0.82"></label>
+              <label>Inner X offset <output id="moonOffsetXOut">0.36</output><input id="moonOffsetX" type="range" min="-0.6" max="0.8" step="0.01" value="0.36"></label>
+              <label>Inner Y offset <output id="moonOffsetYOut">0.00</output><input id="moonOffsetY" type="range" min="-0.6" max="0.6" step="0.01" value="0"></label>
+              <label>Moon rotation <output id="moonRotationOut">-12°</output><input id="moonRotation" type="range" min="-180" max="180" value="-12"></label>
+              <label>Base thickness <output id="baseOut">0.8 mm</output><input id="base" type="range" min="0.4" max="2" step="0.1" value="0.8"></label>
+              </div>
+            </div></details>
+          </aside>
+
+          <section class="workbench">
+            <div class="workbench-head"><div><p class="eyebrow">LIVE PREVIEW</p><h2>Moonlit memory</h2></div><div class="view-switch" role="group"><button class="active" data-view="model">3D object</button><button data-view="image">Height map</button><button data-camera="front">Front</button><button data-camera="side">Side</button></div></div>
+            <div class="stage" id="stage"><div class="empty-state" id="emptyState"><span>◒</span><h3>Your image belongs in the moon.</h3><p>Upload a photo to begin sculpting its light.</p></div><canvas id="imageCanvas" class="hidden"></canvas><div id="viewer" class="hidden"></div><div class="stage-overlay"><span id="shapeLabel">CRESCENT · 100 × 100 MM</span><span id="renderStatus">PREVIEW READY</span></div></div>
+            <div class="thumbnail-row"><div class="thumb-card"><span>ORIGINAL</span><canvas id="originalCanvas"></canvas></div><div class="thumb-card"><span>LUMINANCE</span><canvas id="grayCanvas"></canvas></div><div class="metrics"><div><small>VERTICES</small><strong id="verticesMetric">—</strong></div><div><small>TRIANGLES</small><strong id="trianglesMetric">—</strong></div><div><small>EST. STL</small><strong id="sizeMetric">—</strong></div></div></div>
+          </section>
+
+          <aside class="export-panel">
+            <div class="panel-title"><span>02</span><h2>Ready to print</h2></div>
+            <div class="print-card"><div class="print-icon">⌁</div><div><p>White PLA</p><small>Recommended material</small></div></div>
+            <dl><div><dt>Layer height</dt><dd>0.08–0.16 mm</dd></div><div><dt>Nozzle</dt><dd>0.4 mm</dd></div><div><dt>Infill</dt><dd>100%</dd></div><div><dt>Orientation</dt><dd>Vertical</dd></div></dl>
+            <div class="export-options"><label>Export format <select id="format"><option value="binary">Binary STL</option><option value="ascii">ASCII STL</option></select></label><label class="switch-line">Wireframe preview <input id="wireframe" type="checkbox"><span class="switch"></span></label><label class="switch-line">Backlight simulation <input id="backlight" type="checkbox" checked><span class="switch"></span></label></div>
+            <button id="generateBtn" class="generate" disabled><span>Generate STL</span><b>→</b></button><p class="export-note">Your photo stays on this device. The final model is generated locally in your browser.</p>
+          </aside>
+        </section>
+      </main>
+      <footer id="guide"><span>© 2026 LUNA LITHO</span><span>MADE FOR SMALL WONDERS</span><span>PRINT WITH LIGHT</span></footer>
+    </div>
+    <div id="toast" class="toast"></div>
+  </body>
+</html>

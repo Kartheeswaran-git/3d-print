@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗝️</text></svg>" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Custom Name Keychain Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Pacifico&family=Bangers&family=Fredoka+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/style.css">
+  <style>
+    /* Additional styles for keychain preview */
+    .keychain-canvas {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      background: #eee;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a href="./index.html" class="brand"><span class="brand-mark">◓</span> <span>LUNA<em>LITHO</em></span></a>
+      <nav>
+        <a href="./index.html">Moon Lamps</a>
+        <a href="./keychain.html" style="color: var(--lime); font-weight: bold;">Keychains</a>
+      </nav>
+      <div class="local-badge"><i></i>Local Processing</div>
+    </header>
+
+    <div class="hero">
+      <div>
+        <p class="eyebrow">KEYCHAIN GENERATOR</p>
+        <h1>Custom <i>Name</i><br>Keychains</h1>
+        <p class="hero-copy">Type a name, select a font, and instantly generate a 3D-printable custom keychain STL. Processed entirely in your browser.</p>
+      </div>
+    </div>
+
+    <main class="studio-grid">
+      <form id="settingsForm" onsubmit="event.preventDefault()" style="display: contents;">
+        <aside class="controls" aria-label="Keychain settings">
+          <div class="panel-title"><span>01</span><h2>Keychain Design</h2></div>
+          
+          <div class="control-stack" style="margin-top: 15px;">
+            <label>Name / Text <input id="keychainText" type="text" value="YourName" style="width: 100%; padding: 8px; margin-top: 5px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"></label>
+            <label>Font <select id="keychainFont" style="width: 100%; padding: 8px; margin-top: 5px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;">
+              <option value="Manrope" selected>Manrope (Clean)</option>
+              <option value="Pacifico">Pacifico (Cursive)</option>
+              <option value="Bangers">Bangers (Comic)</option>
+              <option value="Playfair Display">Playfair (Elegant)</option>
+            </select></label>
+          </div>
+
+          <details open><summary><span>DIMENSIONS &amp; THICKNESS</span><b>+</b></summary><div class="control-stack">
+            <label>Target Height <output id="targetHeightOut">25 mm</output><input id="targetHeight" type="range" min="15" max="50" step="1" value="25"></label>
+            <label>Base Thickness <output id="baseThicknessOut">2.0 mm</output><input id="baseThickness" type="range" min="1.0" max="4.0" step="0.1" value="2.0"></label>
+            <label>Text Extra Thickness <output id="textThicknessOut">1.5 mm</output><input id="textThickness" type="range" min="0.5" max="4.0" step="0.1" value="1.5"></label>
+            <label>Outline Width <output id="outlineWidthOut">4.0 mm</output><input id="outlineWidth" type="range" min="1.0" max="8.0" step="0.1" value="4.0"></label>
+            <label>Keyring Hole Size <output id="holeSizeOut">4.0 mm</output><input id="holeSize" type="range" min="2.0" max="8.0" step="0.1" value="4.0"></label>
+          </div></details>
+
+          <details open><summary><span>PREVIEW COLORS</span><b>+</b></summary><div class="control-stack">
+            <div style="display: flex; gap: 10px;">
+              <label style="flex: 1">Base Color <input id="baseColor" type="color" value="#333333" style="width: 100%; height: 32px; border: none; padding: 0; cursor: pointer;"></label>
+              <label style="flex: 1">Text Color <input id="textColor" type="color" value="#ff7b00" style="width: 100%; height: 32px; border: none; padding: 0; cursor: pointer;"></label>
+            </div>
+          </div></details>
+        </aside>
+
+        <section class="workbench">
+          <div class="workbench-head">
+            <h2>3D Preview</h2>
+            <div class="view-switch">
+              <button data-view="model" class="active" type="button">3D Mesh</button>
+              <button data-view="image" type="button">2D Mask</button>
+            </div>
+          </div>
+          
+          <canvas id="maskPreview" class="keychain-canvas hidden"></canvas>
+          
+          <div class="stage">
+            <div id="viewer"></div>
+            <div class="stage-overlay">
+              <span id="shapeLabel">CUSTOM KEYCHAIN</span>
+              <span id="renderStatus">READY</span>
+            </div>
+          </div>
+          <p class="model-help">Drag to rotate · Scroll to zoom · Use the controls to adjust the 3D model.</p>
+        </section>
+
+        <aside class="export-panel">
+          <div class="print-card">
+            <div class="print-icon">↓</div>
+            <div><p>Ready to Print</p><small>Generates a watertight STL.</small></div>
+          </div>
+          <dl>
+            <div><dt>EST. DIMENSIONS</dt><dd id="dimsOut">-- × -- mm</dd></div>
+            <div><dt>VERTICES</dt><dd id="vertsOut">--</dd></div>
+            <div><dt>TRIANGLES</dt><dd id="trisOut">--</dd></div>
+          </dl>
+          <div class="export-options">
+            <label>Format <select id="format"><option value="amf">Multi-Color AMF (Bambu/Prusa)</option><option value="binary">Binary STL (Smaller)</option><option value="ascii">ASCII STL</option></select></label>
+          </div>
+          <button class="generate" id="generateBtn" type="button"><span>Download File</span><b>↓</b></button>
+          <p class="export-note">All 3D mesh generation happens securely on your device.</p>
+        </aside>
+      </form>
+    </main>
+    <footer>
+      <span>LUNA LITHO © 2026</span>
+      <span>Processed locally. No data leaves your browser.</span>
+    </footer>
+    <div class="toast" id="toast"></div>
+  </div>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="/src/keychain.js"></script>
+</body>
+</html>
